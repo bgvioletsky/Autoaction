@@ -17,6 +17,9 @@ jobs:
   send-message:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - name: Send Markdown to Telegram
         run: |
           if [ ! -f "${{ inputs.markdown_file }}" ]; then
