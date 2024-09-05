@@ -31,7 +31,7 @@ jobs:
           echo "[inline URL](http://www.example.com/)" >> ${{ env.OUTPUT_FILE }}
 
       - name: Call Send Markdown to Telegram Workflow
-        uses: ./.github/bgcode/send-markdown.yml
+        uses: ./.github/workflows/send-markdown.yml
         with:
           markdown_file: '${{ env.OUTPUT_FILE }}'
         
