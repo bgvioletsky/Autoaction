@@ -31,6 +31,6 @@ jobs:
       - name: Send Markdown to Telegram
         run: |         
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
-            -F chat_id=${{ secrets.TELEGRAM_ID }} \
-            -F text=$(cat ${{ env.OUTPUT_FILE }}) \
-            -F parse_mode=Markdown
+            -d "chat_id=${{ secrets.TELEGRAM_ID }}" \
+            -d "text=$(cat ${{ env.OUTPUT_FILE }})" \
+            -d "parse_mode=Markdown"
