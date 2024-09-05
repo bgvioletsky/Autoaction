@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OUTPUT_FILE: "bg.md"
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_ID }}
+
     steps:
         - uses: actions/checkout@v4
         - name: Set up Python
@@ -24,7 +27,5 @@ jobs:
           uses: ./.github/bgcode/send-markdown.yml
           with:
             markdown_file: 'bg.md'
-          secrets:
-            TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_ID }}
+        
         
