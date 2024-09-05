@@ -1,0 +1,25 @@
+name: Send Markdown to Telegram
+
+on:
+  workflow_call:
+    inputs:
+      markdown_file:
+        description: 'Path to the Markdown file to send'
+        required: true
+        type: string
+    secrets:
+      TELEGRAM_BOT_TOKEN:
+        required: true
+      TELEGRAM_CHAT_ID:
+        required: true
+
+jobs:
+  send-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Markdown to Telegram
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$(cat ${{ inputs.markdown_file }})" \
+            -d "parse_mode=Markdown"
