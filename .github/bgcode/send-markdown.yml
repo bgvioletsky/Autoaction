@@ -19,7 +19,12 @@ jobs:
     steps:
       - name: Send Markdown to Telegram
         run: |
+          if [ ! -f "${{ inputs.markdown_file }}" ]; then
+            echo "File not found: ${{ inputs.markdown_file }}"
+            exit 1
+          fi
+          
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d "text=$(cat ${{ inputs.markdown_file }})" \
-            -d "parse_mode=Markdown"
+            -F chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -F text=@${{ inputs.markdown_file }} \
+            -F parse_mode=Markdown

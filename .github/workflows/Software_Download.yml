@@ -2,6 +2,10 @@ name: Software Download link
 
 on:
   workflow_dispatch:
+  # 增加定时任务触发
+  schedule:
+    - cron: '0 0 * * *'  # 每天凌晨执行一次
+
 jobs:
   build:
     name: Software Download link
@@ -12,20 +16,22 @@ jobs:
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_ID }}
 
     steps:
-        - uses: actions/checkout@v4
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: "3.x"
-        - name: Create Markdown file
-          run: |
-            echo "*bold* text" > bg.md
-            echo "_italic text_" >> bg.md
-            echo "[inline URL](http://www.example.com/)" >> bg.md
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-        - name: Call Send Markdown to Telegram Workflow
-          uses: ./.github/bgcode/send-markdown.yml
-          with:
-            markdown_file: 'bg.md'
-        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      
+      - name: Create Markdown file
+        run: |
+          echo "*bold* text" > ${{ env.OUTPUT_FILE }}
+          echo "_italic text_" >> ${{ env.OUTPUT_FILE }}
+          echo "[inline URL](http://www.example.com/)" >> ${{ env.OUTPUT_FILE }}
+
+      - name: Call Send Markdown to Telegram Workflow
+        uses: ./.github/bgcode/send-markdown.yml
+        with:
+          markdown_file: '${{ env.OUTPUT_FILE }}'
         
