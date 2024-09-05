@@ -12,12 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OUTPUT_FILE: "bg.md"
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_ID }}
-
+      
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,8 +28,11 @@ jobs:
           echo "_italic text_" >> ${{ env.OUTPUT_FILE }}
           echo "[inline URL](http://www.example.com/)" >> ${{ env.OUTPUT_FILE }}
 
-      - name: Call Send Markdown to Telegram Workflow
-        uses: ./.github/workflows/send-markdown.yml
-        with:
-          markdown_file: '${{ env.OUTPUT_FILE }}'
+      - name: Send Markdown to Telegram
+        run: |         
+          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+            -F chat_id=${{ secrets.TELEGRAM_ID }} \
+            -F text=@${{ env.OUTPUT_FILE }} \
+            -F parse_mode=Markdown
+
         
