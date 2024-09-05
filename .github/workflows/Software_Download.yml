@@ -15,7 +15,7 @@ jobs:
         - name: 'Send telegram message'
           uses: appleboy/telegram-action@master
           with:
-            to: "https://t.me/+SEIF-UD4f9mev0Ct"
-            token: "6960944680:AAEIhVRku-enKRbj03T00PU3mYg3kVUSphw"
+            to: ${{ secrets.TELEGRAM_ID }}
+            token: ${{ secrets.TELEGRAM_TOKEN }}
             message: |
                 this is the test message
