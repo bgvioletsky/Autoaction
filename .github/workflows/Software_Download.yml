@@ -32,3 +32,12 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
+      - name: Commit and push changes
+        run: |
+            git config --local user.email ${{ secrets.TELEGRAM_EMAIL }}
+            git config --local user.name ${{ secrets.TELEGRAM_NAME }}
+            git pull
+            git add ./config/id.json
+            git commit -m "更新id版本"
+            git push
+      

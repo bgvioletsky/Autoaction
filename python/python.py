@@ -19,15 +19,15 @@ def getsource(name,url, img_url, program_url,number):
             for a in number:
                 asset=assets[a]
                 download_urls.append({"name": asset["name"], "download_url": asset["browser_download_url"]})
-            data={name:{"id": id, "name": name, "program_url": program_url, "img_url": img_url, "download_urls": download_urls}}
+            data={name:{"id": id, "name": name, "program_url": program_url, "img_url": img_url, "download_urls": "https://mirror.ghproxy.com/"+download_urls}}
             return data
     except requests.exceptions.RequestException as e:
         print(f"Request error: {e}")
 
 # 比较版本
 def version_compare(name,data):
-    if os.path.exists("config/all.json"):
-        aa=read_json("config/all.json")
+    if os.path.exists("config/id.json"):
+        aa=read_json("config/id.json")
         if aa["name"]==data[name]["id"]:
             return False
         else:
@@ -52,7 +52,7 @@ def read_json(file_path, encoding='utf-8'):
 
 # 写入json文件
 def save_json(data, encoding='utf-8'):
-    app_path = os.path.join('config', 'all.json')
+    app_path = os.path.join('config', 'id.json')
     try:
         with open(app_path, 'w', encoding=encoding) as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
