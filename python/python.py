@@ -73,7 +73,7 @@ def generate_message(data,name):
             data=data[name]
             for url in data["download_urls"]:
                 bg += f"{url['name']}：[下载链接]({url['download_url']}) [代理1](https://mirror.ghproxy.com/{url['download_url']}) [代理2](https://slink.ltd/{url['download_url']})\n"
-            name=data["name"]
+            name=data["name"].replace("_","\_")
             id=data["id"]
           
             program_url=data["program_url"]
