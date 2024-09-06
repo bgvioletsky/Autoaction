@@ -28,9 +28,11 @@ def getsource(name,url, img_url, program_url,number):
 def version_compare(name,data):
     if os.path.exists("config/id.json"):
         aa=read_json("config/id.json")
-        if aa["name"]==data[name]["id"]:
+        bb=read_json("config/telegram_id.json")
+        if aa[name]==data[name]["id"]:
             return False
         else:
+            delete_message(bb[name])
             return True
     else:
         return True
@@ -51,8 +53,8 @@ def read_json(file_path, encoding='utf-8'):
         return None
 
 # 写入json文件
-def save_json(data, encoding='utf-8'):
-    app_path = os.path.join('config', 'id.json')
+def save_json(data,name, encoding='utf-8'):
+    app_path = os.path.join('config', name)
     try:
         with open(app_path, 'w', encoding=encoding) as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
@@ -82,8 +84,8 @@ def generate_message(data,name):
         return None
 # 发送消息
 def send_message(photo_url,caption):
-    bot_token = os.environ.get('TELEGRAM_TOKEN')
-    chat_id = os.environ.get('TELEGRAM_ID')
+    bot_token = os.environ.get('TELEGRAM_TOKEN','6960944680:AAEIhVRku-enKRbj03T00PU3mYg3kVUSphw')
+    chat_id = os.environ.get('TELEGRAM_ID','-1001212286457')
     url = f'https://api.telegram.org/bot{bot_token}/sendPhoto'
     data = {
         'chat_id': chat_id,
@@ -93,14 +95,38 @@ def send_message(photo_url,caption):
     files = {
         'photo': requests.get(photo_url).content
     }
-
     response = requests.post(url, data=data, files=files)
-    print( response.status_code)
+    telegram_response=response.json()
+    ress=telegram_response["result"]["message_id"]
+    return ress
 
+# 删除消息
+def delete_message(message_id):
+    bot_token = os.environ.get('TELEGRAM_TOKEN','6960944680:AAEIhVRku-enKRbj03T00PU3mYg3kVUSphw')
+    chat_id = os.environ.get('TELEGRAM_ID','-1001212286457')
+    url = f'https://api.telegram.org/bot{bot_token}/deleteMessage'
+    params = {
+        'chat_id': chat_id,
+        'message_id': message_id
+    }
+
+    try:
+        response = requests.post(url, params=params)
+        if response.status_code == 200:
+            result = response.json()
+            if result.get('ok'):
+                print(f"Message {message_id} deleted successfully.")
+            else:
+                print(f"Failed to delete message {message_id}. Error: {result.get('description')}")
+        else:
+            print(f"Request error: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Request error: {e}")
 def main():
     file_path = 'config/download.json'
     data=read_json(file_path)
     all={}
+    telegram_id={}
     for item in data:
         url=item["url"]
         img_url=item["img_url"]
@@ -111,8 +137,10 @@ def main():
         all.update({name:source[name]["id"]}) 
         if version_compare(name,source):
             message=generate_message(source,name)
-            send_message(img_url,message)
-    save_json(all)
+            id=send_message(img_url,message)
+            telegram_id.update({name:id})
+    save_json(all,"id.json")
+    save_json(telegram_id,"telegram_id.json")
 
 if __name__ == '__main__':
     main()

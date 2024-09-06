@@ -37,7 +37,7 @@ jobs:
             git config --local user.email ${{ secrets.TELEGRAM_EMAIL }}
             git config --local user.name ${{ secrets.TELEGRAM_NAME }}
             git pull
-            git add ./config/id.json
+            git add ./config/id.json ./config/telegram_id.json
             git commit -m "更新id版本"
             git push
       
