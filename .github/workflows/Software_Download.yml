@@ -14,7 +14,8 @@ jobs:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
       VERSION: ${{ secrets.VERSION }}
-      
+      EMAIL: ${{ secrets.TELEGRAM_EMAIL }}
+      NAME:  ${{ secrets.TELEGRAM_NAME }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -42,8 +43,8 @@ jobs:
                  mv version config/version
       - name: Commit and push changes
         run: |
-            git config --local user.email ${{ secrets.TELEGRAM_EMAIL }}
-            git config --local user.name ${{ secrets.TELEGRAM_NAME }}
+            git config --local user.email ${{ env.EMAIL }}
+            git config --local user.name ${{ env.NAME }}
             git pull
             git add ./config/id.json ./config/telegram_id.json ./config/version
             git commit -m "更新id版本"
