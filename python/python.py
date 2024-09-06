@@ -19,7 +19,7 @@ def getsource(name,url, img_url, program_url,number):
             for a in number:
                 asset=assets[a]
                 download_urls.append({"name": asset["name"], "download_url": asset["browser_download_url"]})
-            data={name:{"id": id, "name": name, "program_url": program_url, "img_url": img_url, "download_urls": "https://mirror.ghproxy.com/"+download_urls}}
+            data={name:{"id": id, "name": name, "program_url": program_url, "img_url": img_url, "download_urls": download_urls}}
             return data
     except requests.exceptions.RequestException as e:
         print(f"Request error: {e}")
@@ -67,7 +67,7 @@ def generate_message(data,name):
             bg=""
             data=data[name]
             for url in data["download_urls"]:
-                bg += f"[{url['name']}]({url['download_url']}) \n"
+                bg += f"[{url['name']}](https://mirror.ghproxy.com/{url['download_url']}) \n"
             name=data["name"]
             id=data["id"]
           
