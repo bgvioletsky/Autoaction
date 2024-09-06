@@ -68,11 +68,13 @@ def save_json(data,name, encoding='utf-8'):
         print(f"An unexpected error occurred: {e}")
 # 生成消息列表
 def generate_message(data,name):
+     version = os.environ.get('version')
+     url_all="https://github.com/bgvioletsky/Autoaction/releases/download/"+version+"/"
      try:
             bg=""
             data=data[name]
             for url in data["download_urls"]:
-                bg += f"{url['name'].replace("_","\_")}：[下载链接]({url['download_url']}) [代理1](https://mirror.ghproxy.com/{url['download_url']}) [代理2](https://slink.ltd/{url['download_url']})\n"
+                bg += f"{url['name'].replace("_","\_")}：[下载链接]({url_all}{url['name']}) [代理1](https://mirror.ghproxy.com/{url_all}{url['name']}) [代理2](https://slink.ltd/{url_all}{url['name']})\n"
             name=data["name"]
             id=data["id"]
           
