@@ -33,4 +33,4 @@ jobs:
           curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
             -d "chat_id=${{ secrets.TELEGRAM_ID }}" \
             -d "text=$(cat ./message/alist.md)" \
-            -d "parse_mode=Markdown"
+            -d "parse_mode=MarkdownV2"
