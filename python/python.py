@@ -84,8 +84,8 @@ def generate_message(data,name):
         return None
 # 发送消息
 def send_message(photo_url,caption):
-    bot_token = os.environ.get('TELEGRAM_TOKEN','6960944680:AAEIhVRku-enKRbj03T00PU3mYg3kVUSphw')
-    chat_id = os.environ.get('TELEGRAM_ID','-1001212286457')
+    bot_token = os.environ.get('TELEGRAM_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_ID')
     url = f'https://api.telegram.org/bot{bot_token}/sendPhoto'
     data = {
         'chat_id': chat_id,
@@ -102,8 +102,8 @@ def send_message(photo_url,caption):
 
 # 删除消息
 def delete_message(message_id):
-    bot_token = os.environ.get('TELEGRAM_TOKEN','6960944680:AAEIhVRku-enKRbj03T00PU3mYg3kVUSphw')
-    chat_id = os.environ.get('TELEGRAM_ID','-1001212286457')
+    bot_token = os.environ.get('TELEGRAM_TOKEN',)
+    chat_id = os.environ.get('TELEGRAM_ID')
     url = f'https://api.telegram.org/bot{bot_token}/deleteMessage'
     params = {
         'chat_id': chat_id,
