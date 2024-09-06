@@ -10,8 +10,9 @@ jobs:
   build:
     name: Software Download link
     runs-on: ubuntu-latest
-    # env:
-    #   OUTPUT_FILE: "bg.md"
+    env:
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
       
     steps:
       - name: Checkout Repository
@@ -21,16 +22,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      
-      # - name: Create Markdown file
-      #   run: |
-      #     echo "*bold* text" > ${{ env.OUTPUT_FILE }}
-      #     echo "_italic text_" >> ${{ env.OUTPUT_FILE }}
-      #     echo "[inline URL](http://www.example.com/)" >> ${{ env.OUTPUT_FILE }}
-
-      - name: Send Markdown to Telegram
-        run: |         
-          curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_ID }}" \
-            -d "text=$(cat ./message/alist.md)" \
-            -d "parse_mode=MarkdownV2"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests  # 安装所需的依赖包
+      - name: Run Python script
+        run: |
+          python ./python/python.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
