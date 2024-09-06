@@ -3,11 +3,13 @@
         "name": "PicGo",
         "url": "https://api.github.com/repos/Molunerfinn/PicGo/releases/latest",
         "img_url": "https://raw.githubusercontent.com/bgvioletsky/ImgBlog/main/Typora/202409060835142.png",
-        "program_url":"https://github.com/Molunerfinn/PicGo"
+        "program_url":"https://github.com/Molunerfinn/PicGo",
+        "number":[3,5,7,8,10,12,14]
     },{
         "name": "Alist",
         "url": "https://api.github.com/repos/alist-org/alist/releases/latest",
         "img_url": "https://cdn.jsdelivr.net/gh/bgvioletsky/ImgBlog/Typora/202408231913099.png",
-        "program_url":"https://github.com/alist-org/alist"
+        "program_url":"https://github.com/alist-org/alist",
+        "number":[1,2,3]
     }
 ]

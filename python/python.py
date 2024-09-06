@@ -8,7 +8,7 @@ def get_time():
     return now.strftime("%Y-%m-%d %H:%M:%S")
     
 # 获取下载链接
-def getsource(name,url, img_url, program_url):
+def getsource(name,url, img_url, program_url,number):
     try:
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
@@ -16,13 +16,24 @@ def getsource(name,url, img_url, program_url):
             id = releases["id"]
             assets = releases["assets"]
             download_urls = []
-            for asset in assets:
+            for a in number:
+                asset=assets[a]
                 download_urls.append({"name": asset["name"], "download_url": asset["browser_download_url"]})
-            data={"id": id, "name": name, "program_url": program_url, "img_url": img_url, "download_urls": download_urls}
+            data={name:{"id": id, "name": name, "program_url": program_url, "img_url": img_url, "download_urls": download_urls}}
             return data
     except requests.exceptions.RequestException as e:
         print(f"Request error: {e}")
 
+# 比较版本
+def version_compare(name,data):
+    if os.path.exists("config/all.json"):
+        aa=read_json("config/all.json")
+        if aa["name"]==data[name]["id"]:
+            return False
+        else:
+            return True
+    else:
+        return True
 # 读取json文件
 def read_json(file_path, encoding='utf-8'):
     try:
@@ -39,31 +50,29 @@ def read_json(file_path, encoding='utf-8'):
         print(f"JSON decoding error: {e}")
         return None
 
+# 写入json文件
 def save_json(data, encoding='utf-8'):
-    all=[]
-    if data is not None:
-        for item in data:
-            all.append(getsource(item["url"], item["img_url"], item["program_url"], item["name"]))
     app_path = os.path.join('config', 'all.json')
     try:
         with open(app_path, 'w', encoding=encoding) as file:
-            json.dump(all, file, ensure_ascii=False, indent=4)
+            json.dump(data, file, ensure_ascii=False, indent=4)
         print(f"File '{app_path}' written successfully.")
     except IOError as e:
         print(f"An error occurred while writing to the file: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 # 生成消息列表
-def generate_message(data):
+def generate_message(data,name):
      try:
             bg=""
+            data=data[name]
             for url in data["download_urls"]:
                 bg += f"[{url['name']}]({url['download_url']}) \n"
             name=data["name"]
             id=data["id"]
           
             program_url=data["program_url"]
-            x=f"**{name}**\n**版本 ID: {id}**\n\n[{name} 开源地址]({program_url})\n\n**下载链接**\n\n\n**发布时间: {get_time()}**"
+            x=f"**{name}**\n\n**版本 ID: {id}**\n\n[{name} 开源地址]({program_url})\n\n**下载链接:**\n{bg}\n\n**发布时间: {get_time()}**"
             return x
                      
      except FileNotFoundError:
@@ -91,15 +100,19 @@ def send_message(photo_url,caption):
 def main():
     file_path = 'config/download.json'
     data=read_json(file_path)
+    all={}
     for item in data:
         url=item["url"]
         img_url=item["img_url"]
         program_url=item["program_url"]
         name=item["name"]
-        data=getsource(name,url,img_url,program_url)
-        message=generate_message(data)
-        send_message(img_url,message)
-
+        number=item["number"]
+        source=getsource(name,url,img_url,program_url,number)
+        all.update({name:source[name]["id"]}) 
+        if version_compare(name,source):
+            message=generate_message(source,name)
+            send_message(img_url,message)
+    save_json(all)
 
 if __name__ == '__main__':
     main()
