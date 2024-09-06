@@ -37,6 +37,11 @@ jobs:
                     echo "Failed to download the file."
                     exit 1
                  fi                 
+                 if ! mv ./config/version  version; then
+                    echo "Failed to move the file."
+                    exit 1
+                 fi
+                 
                  echo "version=$(bash version.sh)" >> $GITHUB_ENV
                  echo "**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >> bgcode.txt
                  mv version config/version
