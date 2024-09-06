@@ -49,7 +49,7 @@ def read_template(template_path):
 def generate_download_table(download_urls):
     table_rows = []
     for url in download_urls:
-        row = f"[{url['name']}]({url['download_url']}) \n\n"
+        row = f"- [{url['name']}]({url['download_url']}) \n\n"
         table_rows.append(row)
     return ''.join(table_rows)
 
