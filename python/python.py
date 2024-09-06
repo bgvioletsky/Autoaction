@@ -67,7 +67,7 @@ def generate_message(data,name):
             bg=""
             data=data[name]
             for url in data["download_urls"]:
-                bg += f"[{url['name']}](https://mirror.ghproxy.com/{url['download_url']}) \n"
+                bg += f"[{url['name']}]({url['download_url']}) [{url['name']}代理1](https://mirror.ghproxy.com/{url['download_url']}) [{url['name']}代理2](https://slink.ltd/{url['download_url']})\n"
             name=data["name"]
             id=data["id"]
           
