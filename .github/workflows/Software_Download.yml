@@ -13,6 +13,7 @@ jobs:
     env:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
+      VERSION: "https://raw.githubusercontent.com/bgvioletsky/command/main/version.sh"
       
     steps:
       - name: Checkout Repository
@@ -29,15 +30,32 @@ jobs:
       - name: Run Python script
         run: |
           python ./python/python.py
-       
+      - name: 创建版本号
+        run: |
+                 if ! curl -L --silent --output ./version.sh ${{ env.VERSION}}; then
+                    echo "Failed to download the file."
+                    exit 1
+                 fi                 
+                 echo "version=$(bash version.sh)" >> $GITHUB_ENV
+                 echo "## $(cat version)" >> bgcode.txt
+                 echo "发布时间：$(date +'%Y-%m-%d %H:%M:%S')" >> bgcode.txt
+                 mv version config/version
       - name: Commit and push changes
         run: |
             git config --local user.email ${{ secrets.TELEGRAM_EMAIL }}
             git config --local user.name ${{ secrets.TELEGRAM_NAME }}
             git pull
-            git add ./config/id.json ./config/telegram_id.json
+            git add ./config/id.json ./config/telegram_id.json ./config/version
             git commit -m "更新id版本"
             git push
+      - name: 发布到release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GIT_TOKEN}}
+        with:
+          tag_name: ${{ env.version }}
+          body_path: bgcode.txt
+          files: ./output/*
       - name: 删除
         shell: bash
         run: |
@@ -54,3 +72,4 @@ jobs:
                         -H "Accept: application/vnd.github.v3+json" > /dev/null
                     fi
                   done
+      

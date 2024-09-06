@@ -125,6 +125,29 @@ def delete_message(message_id):
             print(f"Request error: {response.status_code}")
     except requests.exceptions.RequestException as e:
         print(f"Request error: {e}")
+        
+#下载文件
+def download_file(url, local_filename):
+    # 如果没有提供文件名，则使用URL中的文件名
+    if not os.path.exists("output"):
+        os.makedirs("output")
+    app_path = os.path.join('output', local_filename)
+
+    # 发送HTTP GET请求
+    response = requests.get(url, stream=True)
+    
+    # 检查请求是否成功
+    if response.status_code == 200:
+        # 打开一个文件用于写入
+        with open(app_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:  # 过滤掉保持连接的数据
+                    f.write(chunk)
+        print(f"文件已成功下载为 {local_filename}")
+    else:
+        print("下载失败，请检查URL或网络连接。")
+    
+#主函数
 def main():
     file_path = 'config/download.json'
     data=read_json(file_path)
@@ -137,6 +160,8 @@ def main():
         name=item["name"]
         number=item["number"]
         source=getsource(name,url,img_url,program_url,number)
+        for url in source[name]["download_urls"]:
+            download_file(url['download_url'], url['name'])
         all.update({name:source[name]["id"]}) 
         if version_compare(name,source):
             message=generate_message(source,name)
