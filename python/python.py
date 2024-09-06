@@ -29,11 +29,14 @@ def version_compare(name,data):
     if os.path.exists("config/id.json"):
         aa=read_json("config/id.json")
         bb=read_json("config/telegram_id.json")
-        if aa[name]==data[name]["id"]:
-            return False
-        else:
-            delete_message(bb[name])
+        if name not in aa:
             return True
+        else:
+            if aa[name]==data[name]["id"]:
+                return False
+            else:
+                delete_message(bb[name])
+                return True
     else:
         return True
 # 读取json文件
