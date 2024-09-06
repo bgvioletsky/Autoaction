@@ -13,7 +13,7 @@ jobs:
     env:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_ID: ${{ secrets.TELEGRAM_ID }}
-      VERSION: "https://raw.githubusercontent.com/bgvioletsky/command/main/version.sh"
+      VERSION: ${{ secrets.VERSION }}
       
     steps:
       - name: Checkout Repository
