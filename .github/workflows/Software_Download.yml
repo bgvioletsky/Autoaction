@@ -3,8 +3,8 @@ name: Software Download link
 on:
   workflow_dispatch:
   # 增加定时任务触发
-  schedule:
-    - cron: '0 0 * * *'  # 每天凌晨执行一次
+  # schedule:
+  #   - cron: '0 0 * * *'  # 每天凌晨执行一次
 
 jobs:
   build:
