@@ -82,17 +82,17 @@ class HttpClient:
             self.subt = "签到失败!"
             return False
 
-    def info(self):
+    def info(self,host):
         try:
             url = f"/home.php?mod=space&"
             headers = {
-                "Host": self.host,
-                "Referer": f"http://{self.host}/member.php?mod=logging&action=login&mobile=2",
+                "Host": host,
+                "Referer": f"http://{host}/member.php?mod=logging&action=login&mobile=2",
                 "Cookie": self.cookie,
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Snapchat/10.77.5.59 (like Safari/604.1)",
             }
 
-            conn = http.client.HTTPConnection(self.host)
+            conn = http.client.HTTPConnection(host)
             conn.request("GET", url, headers=headers)
             resp = conn.getresponse()
             resdata = resp.read().decode('utf-8')
