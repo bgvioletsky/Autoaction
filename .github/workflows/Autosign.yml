@@ -26,7 +26,7 @@ jobs:
           shell: bash
           run: |
                     current_run_id=$(echo "$GITHUB_RUN_ID")
-                    runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/Software_Download.yml/runs" \
+                    runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/Autosign.yml/runs" \
                       -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                       -H "Accept: application/vnd.github.v3+json" | jq -r '.workflow_runs[].id')
                     echo "$runs"
