@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2024-10-28 15:54:20
-LastEditTime: 2024-10-28 16:12:05
+LastEditTime: 2024-10-28 16:24:31
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/sxmd.py
@@ -122,7 +122,7 @@ def main():
             print("获取 formhash 成功")
             if client.sign(host):
                 print(client.subt)
-                if client.info():
+                if client.info(host):
                     print(client.result)
             else:
                 print(client.subt)
