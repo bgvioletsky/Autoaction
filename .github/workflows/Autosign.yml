@@ -1,0 +1,25 @@
+name: 自动签到
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *'  # 每天8:00执行一次
+jobs:
+  build:
+    name: 流程签到
+    runs-on: ubuntu-latest
+    env:
+      SXMD_ACCOUNT: ${{ secrets.SXMD_ACCOUNT }}
+      SXMD_PASSWORD: ${{ secrets.SXMD_PASSWORD }}
+    steps:
+        - name: 检查
+          uses: actions/checkout@v4
+
+        - name: 设置python环境
+          uses: actions/setup-python@v5
+          with:
+            python-version: "3.x"
+        - name: 运行签到脚本
+          run: |
+              python ./python/sxmd.py
+             
