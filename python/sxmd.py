@@ -82,6 +82,33 @@ class HttpClient:
             self.subt = "签到失败!"
             return False
 
+    def info(self):
+        try:
+            url = f"/home.php?mod=space&"
+            headers = {
+                "Host": self.host,
+                "Referer": f"http://{self.host}/member.php?mod=logging&action=login&mobile=2",
+                "Cookie": self.cookie,
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Mobile/15E148 Snapchat/10.77.5.59 (like Safari/604.1)",
+            }
+
+            conn = http.client.HTTPConnection(self.host)
+            conn.request("GET", url, headers=headers)
+            resp = conn.getresponse()
+            resdata = resp.read().decode('utf-8')
+
+            if resp.status == 200:
+                message = re.search(r'<li><em>金币<\/em>(.+?) 枚<\/li>', resdata)
+                if message:
+                    self.result += "金币:" + message.group(1)
+                return True
+            else:
+                print(f"请求失败，状态码: {resp.status}")
+                return False
+        except Exception as err:
+            print(err)
+            return False
+
 # 示例用法
 def main():
     client = HttpClient()
@@ -95,6 +122,8 @@ def main():
             print("获取 formhash 成功")
             if client.sign(host):
                 print(client.subt)
+                if client.info():
+                    print(client.result)
             else:
                 print(client.subt)
         else:
