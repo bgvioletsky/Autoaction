@@ -109,9 +109,8 @@ class HttpClient:
 def main():
     client = HttpClient()
     host = "www.txtnovel.vip"
-    # account=os.environ.get('SXMD_ACCOUNT')
-    # password=os.environ.get('SXMD_PASSWORD')
-    account, password = "bgcode", "snC$3LfrxVq7f"
+    account=os.environ.get('SXMD_ACCOUNT')
+    password=os.environ.get('SXMD_PASSWORD')
     if client.login(host, account, password):
         print("登录成功")
         if client.getformhash(host):
