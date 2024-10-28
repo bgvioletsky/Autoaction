@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2024-10-28 15:54:20
-LastEditTime: 2024-10-28 16:24:31
+LastEditTime: 2024-10-28 16:30:58
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/sxmd.py
@@ -17,6 +17,7 @@ class HttpClient:
         self.formhash = ""
         self.true = ""
         self.subt = ""
+        self.result=""
 
     def login(self, host, account, password):
         login_url = f"/member.php?mod=logging&action=login&loginsubmit=yes&loginhash=LxEUe&mobile=2"
@@ -83,8 +84,8 @@ class HttpClient:
             return False
 
     def info(self,host):
-        try:
-            url = f"/home.php?mod=space&"
+    
+            url = f"/home.php?mod=space&uid=4402227&do=profile&mobile=yes"
             headers = {
                 "Host": host,
                 "Referer": f"http://{host}/member.php?mod=logging&action=login&mobile=2",
@@ -96,26 +97,21 @@ class HttpClient:
             conn.request("GET", url, headers=headers)
             resp = conn.getresponse()
             resdata = resp.read().decode('utf-8')
-
-            if resp.status == 200:
-                message = re.search(r'<li><em>金币<\/em>(.+?) 枚<\/li>', resdata)
-                if message:
-                    self.result += "金币:" + message.group(1)
+            message = re.search(r'<li><em>金币<\/em>(.+?) 枚<\/li>', resdata)
+            if message:
+                self.result += "金币:" + message.group(1)
                 return True
             else:
-                print(f"请求失败，状态码: {resp.status}")
                 return False
-        except Exception as err:
-            print(err)
-            return False
+
 
 # 示例用法
 def main():
     client = HttpClient()
     host = "www.txtnovel.vip"
-    account=os.environ.get('SXMD_ACCOUNT')
-    password=os.environ.get('SXMD_PASSWORD')
-
+    # account=os.environ.get('SXMD_ACCOUNT')
+    # password=os.environ.get('SXMD_PASSWORD')
+    account, password = "bgcode", "snC$3LfrxVq7f"
     if client.login(host, account, password):
         print("登录成功")
         if client.getformhash(host):
