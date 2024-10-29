@@ -3,7 +3,7 @@ name: 自动签到
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 4 * * *'  # 每天8:00执行一次
+    - cron: '18 3 * * *'  # 每天8:00执行一次
 jobs:
   build:
     name: 流程签到
