@@ -1,9 +1,9 @@
-name: 自动签到
+name: Autosign.yml
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '18 3 * * *'  # 每天8:00执行一次
+    - cron: '25 3 * * *'  # 每天8:00执行一次
 jobs:
   build:
     name: 流程签到
@@ -26,7 +26,7 @@ jobs:
           shell: bash
           run: |
                     current_run_id=$(echo "$GITHUB_RUN_ID")
-                    runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml/runs" \
+                    runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}/runs" \
                       -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
                       -H "Accept: application/vnd.github.v3+json" | jq -r '.workflow_runs[].id')
                     echo "$runs"
