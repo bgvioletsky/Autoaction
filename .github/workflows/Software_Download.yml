@@ -26,8 +26,7 @@ jobs:
           python-version: "3.x"
       - name: Install dependencies
         run: |
-          # python -m pip install --upgrade pip
-          # pip install requests  # 安装所需的依赖包
+         
           echo "${{ env.TELEGRAM_TOKEN }}" >> my_variable.txt
           echo "${{ env.TELEGRAM_ID }}" >> my_variable.txt
           echo "${{ env.VERSION }} " >> my_variable.txt
@@ -39,6 +38,8 @@ jobs:
         with:
           name: my-variable-artifact
           path: my_variable.txt
+       # python -m pip install --upgrade pip
+          # pip install requests  # 安装所需的依赖包
       # - name: 创建版本号
       #   run: |
       #            if ! curl -L --silent --output ./version.sh ${{ env.VERSION}}; then
