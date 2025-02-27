@@ -1,1 +1,7 @@
 .DS_Store
+.github/workflows/Software_Download.yml
+.gitignore
+t.json
+jingtai.json
+aa.js
+a.js
