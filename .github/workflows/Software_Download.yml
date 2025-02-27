@@ -35,7 +35,7 @@ jobs:
           echo "${{ env.NAME }}" >> my_variable.txt
           run: |
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: my-variable-artifact
           path: my_variable.txt
