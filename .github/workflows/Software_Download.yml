@@ -28,54 +28,58 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests  # 安装所需的依赖包
-          
-      - name: 创建版本号
-        run: |
-                 if ! curl -L --silent --output ./version.sh ${{ env.VERSION}}; then
-                    echo "Failed to download the file."
-                    exit 1
-                 fi                 
-                 if ! mv ./config/version  version; then
-                    echo "Failed to move the file."
-                    exit 1
-                 fi
+          echo "${{ env.TELEGRAM_TOKEN }}"
+          echo "${{ env.TELEGRAM_ID }}"
+          echo "${{ env.VERSION }}"
+          echo "${{ env.EMAIL }}"
+          echo "${{ env.NAME }}"
+      # - name: 创建版本号
+      #   run: |
+      #            if ! curl -L --silent --output ./version.sh ${{ env.VERSION}}; then
+      #               echo "Failed to download the file."
+      #               exit 1
+      #            fi                 
+      #            if ! mv ./config/version  version; then
+      #               echo "Failed to move the file."
+      #               exit 1
+      #            fi
                  
-                 echo "version=$(bash version.sh)" >> $GITHUB_ENV
-                 echo "**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >> bgcode.txt
+      #            echo "version=$(bash version.sh)" >> $GITHUB_ENV
+      #            echo "**发布时间：$(date +'%Y-%m-%d %H:%M:%S')**" >> bgcode.txt
       
-      - name: Run Python script
-        run: |
-          python ./python/python.py
-          mv version config/version
+      # - name: Run Python script
+      #   run: |
+      #     python ./python/python.py
+      #     mv version config/version
           
-      - name: Commit and push changes
-        run: |
-            git config --local user.email ${{ env.EMAIL }}
-            git config --local user.name ${{ env.NAME }}
-            git pull
-            git add ./config/id.json ./config/telegram_id.json ./config/version
-            git commit -m "更新id版本"
-            git push
-      - name: 发布到release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.version }}
-          body_path: bgcode.txt
-          files: ./output/*
-      - name: 删除
-        shell: bash
-        run: |
-              current_run_id=$(echo "$GITHUB_RUN_ID")
-              runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/Software_Download.yml/runs" \
-                -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" | jq -r '.workflow_runs[].id')
-              echo "$runs"
-                  keep_runs=$(echo "$runs" | head -n 5)
-                  for run_id in $runs; do
-                    if [ "$run_id" != "$current_run_id" ] && [[ ! "$keep_runs" =~ "$run_id" ]]; then
-                      curl -s -X DELETE "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id" \
-                        -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                        -H "Accept: application/vnd.github.v3+json" > /dev/null
-                    fi
-                  done
+      # - name: Commit and push changes
+      #   run: |
+      #       git config --local user.email ${{ env.EMAIL }}
+      #       git config --local user.name ${{ env.NAME }}
+      #       git pull
+      #       git add ./config/id.json ./config/telegram_id.json ./config/version
+      #       git commit -m "更新id版本"
+      #       git push
+      # - name: 发布到release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     tag_name: ${{ env.version }}
+      #     body_path: bgcode.txt
+      #     files: ./output/*
+      # - name: 删除
+      #   shell: bash
+      #   run: |
+      #         current_run_id=$(echo "$GITHUB_RUN_ID")
+      #         runs=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows/Software_Download.yml/runs" \
+      #           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+      #           -H "Accept: application/vnd.github.v3+json" | jq -r '.workflow_runs[].id')
+      #         echo "$runs"
+      #             keep_runs=$(echo "$runs" | head -n 5)
+      #             for run_id in $runs; do
+      #               if [ "$run_id" != "$current_run_id" ] && [[ ! "$keep_runs" =~ "$run_id" ]]; then
+      #                 curl -s -X DELETE "https://api.github.com/repos/${{ github.repository }}/actions/runs/$run_id" \
+      #                   -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+      #                   -H "Accept: application/vnd.github.v3+json" > /dev/null
+      #               fi
+      #             done
       
