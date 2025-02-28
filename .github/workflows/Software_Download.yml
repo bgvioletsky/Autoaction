@@ -32,7 +32,7 @@ jobs:
           echo "${{ env.VERSION }} " >> my_variable.txt
           echo "${{ env.EMAIL }}" >> my_variable.txt
           echo "${{ env.NAME }}" >> my_variable.txt
-          run: |
+         
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
