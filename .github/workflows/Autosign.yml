@@ -22,6 +22,7 @@ jobs:
         - name: 运行签到脚本
           run: |
               python ./python/sxmd.py
+              echo "version=$(date +'%Y-%m-%d %H:%M:%S')**" >>$GITHUB_ENV
         - name: 删除
           shell: bash
           run: |
@@ -38,3 +39,16 @@ jobs:
                               -H "Accept: application/vnd.github.v3+json" > /dev/null
                           fi
                         done
+        - name: Send email
+          uses: bgvioletsky/send_email@v1.0.0  # 替换为你的仓库信息
+          with:
+            server_address: smtp.163.com
+            server_port: 465
+            username: ${{ secrets.EMAIL_USERNAME }}
+            password: ${{ secrets.EMAIL_PASSWORD }}
+            subject: 书香门第签到
+            body: 签到成功${{ env.version }}
+            to: ${{ secrets.AIM_EMAIL }}
+            from: ${{ secrets.EMAIL_USERNAME }}
+            html: false
+                
