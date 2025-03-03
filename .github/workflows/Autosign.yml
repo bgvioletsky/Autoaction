@@ -47,7 +47,7 @@ jobs:
             username: ${{ secrets.EMAIL_USERNAME }}
             password: ${{ secrets.EMAIL_PASSWORD }}
             subject: 书香门第签到
-            body: 签到成功${{ env.version }}
+            body: 签到成功 ${{ env.version }}
             to: ${{ secrets.AIM_EMAIL }}
             from: ${{ secrets.EMAIL_USERNAME }}
             html: false
