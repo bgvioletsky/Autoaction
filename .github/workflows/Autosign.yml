@@ -11,10 +11,16 @@ jobs:
     env:
       SXMD_ACCOUNT: ${{ secrets.SXMD_ACCOUNT }}
       SXMD_PASSWORD: ${{ secrets.SXMD_PASSWORD }}
+      YSQ_ACCOUNT: ${{ secrets.YSQ_ACCOUNT }}
+      YSQ_PASSWORD: ${{ secrets.YSQ_PASSWORD }}
     steps:
         - name: 检查
           uses: actions/checkout@v4
 
+        - name: Install dependencies
+          run: |
+              python -m pip install --upgrade pip
+              pip install -r ./config/requirements.txt
         - name: 设置python环境
           uses: actions/setup-python@v5
           with:
@@ -23,6 +29,7 @@ jobs:
           run: |
               python ./python/sxmd.py
               echo "version=$(date +'%Y-%m-%d %H:%M:%S')" >>$GITHUB_ENV
+              python ./python/ysq.py
         - name: 删除
           shell: bash
           run: |
