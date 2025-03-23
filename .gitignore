@@ -6,3 +6,6 @@ jingtai.json
 aa.js
 a.js
 .github/workflows/bgcode.yml
+.gitignore
+.idea/vcs.xml
+.gitignore
