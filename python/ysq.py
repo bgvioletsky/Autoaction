@@ -144,7 +144,7 @@ def main():
     account=os.environ.get('YSQ_ACCOUNT')
     password=os.environ.get('YSQ_PASSWORD')
     client.setenv(host,account,password)
-    client.getkey(host)
+    client.getkey()
     client.login_1()
     client.login_2()
     client.gethash()
