@@ -3,7 +3,7 @@ name: Autosign.yml
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 * * *'  # 每天8:00执行一次
+    - cron: '57 15 * * *'  # 每天8:00执行一次
 jobs:
   build:
     name: 流程签到
