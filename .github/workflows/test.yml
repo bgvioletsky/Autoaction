@@ -1,0 +1,14 @@
+name: Scheduled Workflow
+
+on:
+  schedule:
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+jobs:
+  scheduled-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print UTC date
+        run: date
+      - name: Print local date
+        run: TZ='Asia/Shanghai' date  
