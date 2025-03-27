@@ -140,7 +140,7 @@ class HttpClient:
 # 示例用法
 def main():
     client = HttpClient()
-    host = "ysqbbs.com"
+    host = "srcbbs.com"
     account=os.environ.get('YSQ_ACCOUNT')
     password=os.environ.get('YSQ_PASSWORD')
     client.setenv(host,account,password)
