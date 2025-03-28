@@ -9,3 +9,4 @@ a.js
 .gitignore
 .idea/vcs.xml
 .gitignore
+test/
