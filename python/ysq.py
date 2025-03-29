@@ -1,10 +1,10 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-03-28 08:45:38
+LastEditTime: 2025-03-29 22:56:29
 LastEditors: bgcode
 Description: 描述
-FilePath: /Autoaction/test/test.py
+FilePath: /Autoaction/python/ysq.py
 本项目采用GPL 许可证，欢迎任何人使用、修改和分发。
 '''
 import requests
@@ -122,6 +122,8 @@ def main():
     host = "ysqbbs.com"
     account=os.environ.get('YSQ_ACCOUNT')
     password=os.environ.get('YSQ_PASSWORD')
+    # account=""
+    # password=""
     client.setenv(host,account,password)
     client.get_login_info()
     client.login()
