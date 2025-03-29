@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-03-29 22:56:29
+LastEditTime: 2025-03-30 00:24:22
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -20,6 +20,7 @@ class HttpClient:
         self.name = ""
         self.key = ""
         self.signhash = ""
+        self.info=""
     def setenv(self,host,name,key):
         self.host = host
         self.name=quote(name)
@@ -91,8 +92,9 @@ class HttpClient:
             'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
         response = requests.get(url, headers=headers)
-        self.signhash = re.search(r'id="JD_sign".*?href="(.*?)".*onclick', response.text).group(1)
+        # self.signhash = re.search(r'id="JD.*href="(.*?)"', response.text).group(1)
         # print( self.signhash)
+        # print(response.text)
         
     def sign(self):
         url=f'https://{self.host}/{self.signhash}&inajax=1&ajaxtarget='
@@ -117,6 +119,36 @@ class HttpClient:
         response = requests.get(url, headers=headers)
         print(response.text) 
 
+    def get_info(self):
+        url=f'https://{self.host}/home.php?mod=spacecp&ac=credit'
+        headers = {
+            'Connection': 'keep-alive',
+            'Accept-Encoding': 'gzip, deflate, br, zstd',
+            'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+            'Upgrade-Insecure-Requests': '1',
+            'sec-ch-ua-mobile': '?0',
+            'Sec-Fetch-Site': 'same-origin',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+            'Host': self.host,
+            'Cookie': self.cookie,
+            'Referer': 'https://{self.host}/home.php?mod=spacecp&ac=credit&op=base',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
+        }
+        response = requests.get(url, headers=headers)
+        pattern = r'源币.*?>(\d+).*?经验.*?>(\d+).*?贡献.*?>(\d+).*?积分.*?>(\d+)'
+        match = re.search(pattern, response.text, re.DOTALL)  # re.DOTALL 让 . 匹配换行符
+        if match:
+            # 提取四个捕获组的值（确保顺序正确）
+            source_coin = match.group(1)
+            experience = match.group(2)
+            contribution = match.group(3)
+            points = match.group(4)
+            self.info = f"源币:{source_coin}经验:{experience}贡献:{contribution}积分:{points}"
+        else:
+            print("未找到匹配的内容")
+        print(self.info)
+        return self.info
 def main():
     client = HttpClient()
     host = "ysqbbs.com"
@@ -128,7 +160,9 @@ def main():
     client.get_login_info()
     client.login()
     client.gethash()
-    client.sign()
+    # client.sign()
+    info=  client.get_info()
+    return info
 # 运行示例
 if __name__ == "__main__":
     main()
