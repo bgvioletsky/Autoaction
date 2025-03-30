@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-03-30 09:10:13
+LastEditTime: 2025-03-30 09:12:13
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -47,7 +47,7 @@ class HttpClient:
 
         try:
             response = requests.get(url, headers=headers)
-            print(response.text)
+            # print(response.text)
             self.loginhash = re.search(r'loginhash=(.*?)"', response.text).group(1)
             self.forhash = re.search(r'formhash.*value="(.*?)"', response.text).group(1)
             for cookie in response.cookies:
@@ -118,7 +118,7 @@ class HttpClient:
             'Referer' : 'https://{self.host}/k_misign-sign.html'
             };
         response = requests.get(url, headers=headers)
-        print(response.text) 
+        # print(response.text) 
 
     def get_info(self):
         url=f'https://{self.host}/home.php?mod=spacecp&ac=credit'
@@ -148,7 +148,7 @@ class HttpClient:
             self.info = f"源币:{source_coin}经验:{experience}贡献:{contribution}积分:{points}"
         else:
             print("未找到匹配的内容")
-        print(self.info)
+        # print(self.info)
         return self.info
 def main():
     client = HttpClient()
