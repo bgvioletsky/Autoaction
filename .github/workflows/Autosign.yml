@@ -32,14 +32,12 @@ jobs:
         - name: 运行书香门第签到脚本
           if: env.SXMD_ACCOUNT != '' && env.SXMD_PASSWORD != ''
           run: |
-              python ./python/sxmd.py
+               echo "sxmdinfo=$(python ./python/sxmd.py)" >> "$GITHUB_ENV"
+             
         - name: 运行源社区签到脚本
           if: env.YSQ_ACCOUNT != '' && env.YSQ_PASSWORD != ''
           run: |
-              python ./python/ysq.py
-        - name: 签到信息
-          run: |
-              echo "version=$(date +'%Y-%m-%d %H:%M:%S')" >>$GITHUB_ENV
+              echo "ysqinfo=$(python ./python/ysq.py)" >> "$GITHUB_ENV"
         - name: 删除
           shell: bash
           run: |
@@ -65,7 +63,11 @@ jobs:
             username: ${{ env.EMAIL_USERNAME }}
             password: ${{ env.EMAIL_PASSWORD }}
             subject: 书香门第签到
-            body: ${{ env.version }}
+            body: |
+              签到结果：
+              书香门第： ${{env.sxmdinfo}}
+              源社区：${{env.sxmdinfo}}
+              脚本运行时间：${{ github.run_time }}
             to: ${{ env.AIM_EMAIL }}
             from: ${{ env.EMAIL_USERNAME }}
             html: false

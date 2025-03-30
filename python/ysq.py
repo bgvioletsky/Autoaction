@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-03-30 09:12:13
+LastEditTime: 2025-03-30 12:11:13
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -153,10 +153,10 @@ class HttpClient:
 def main():
     client = HttpClient()
     host = "ysqbbs.com"
-    account=os.environ.get('YSQ_ACCOUNT')
-    password=os.environ.get('YSQ_PASSWORD')
-    # account=""
-    # password=""
+    # account=os.environ.get('YSQ_ACCOUNT')
+    # password=os.environ.get('YSQ_PASSWORD')
+    account="丸丸"
+    password="%x35ost*i4xCM"
     client.setenv(host,account,password)
     client.get_login_info()
     client.login()

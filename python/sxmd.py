@@ -119,6 +119,7 @@ def main():
                 print(client.subt)
                 if client.info(host):
                     print(client.result)
+                    return client.result
             else:
                 print(client.subt)
         else:
