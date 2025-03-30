@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2024-10-28 15:54:20
-LastEditTime: 2025-03-30 12:34:22
+LastEditTime: 2025-03-30 12:40:23
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/sxmd.py
@@ -109,14 +109,16 @@ class HttpClient:
 def main():
     client = HttpClient()
     host = "www.txtnovel.vip"
-    account=os.environ.get('SXMD_ACCOUNT')
-    password=os.environ.get('SXMD_PASSWORD')
+    # account=os.environ.get('SXMD_ACCOUNT')
+    # password=os.environ.get('SXMD_PASSWORD')
+    account="bgcode"
+    password="snC$3LfrxVq7f"
     if client.login(host, account, password):
-        print("登录成功")
+        # print("登录成功")
         if client.getformhash(host):
-            print("获取 formhash 成功")
+            # print("获取 formhash 成功")
             if client.sign(host):
-                print(client.subt)
+                # print(client.subt)
                 if client.info(host):
                     print(client.result)
             else:
