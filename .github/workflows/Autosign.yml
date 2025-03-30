@@ -68,7 +68,7 @@ jobs:
             body: |
               签到结果：
               书香门第： ${{env.sxmdinfo}}
-              源社区：${{env.sxmdinfo}}
+              源社区：${{env.ysqinfo}}
               脚本运行时间：${{ github.run_time }}
             to: ${{ env.AIM_EMAIL }}
             from: ${{ env.EMAIL_USERNAME }}
