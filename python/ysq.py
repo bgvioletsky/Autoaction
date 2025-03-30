@@ -150,7 +150,7 @@ class HttpClient:
             experience = match.group(2)
             contribution = match.group(3)
             points = match.group(4)
-            self.info = f"源币:{source_coin}经验:{experience}贡献:{contribution}积分:{points}"
+            self.info = f"源币:{source_coin}  经验:{experience}  贡献:{contribution}  积分:{points}"
         else:
             print("未找到匹配的内容")
         # print(self.info)
@@ -158,14 +158,17 @@ class HttpClient:
 def main():
     client = HttpClient()
     host = "ysqbbs.com"
-    account=os.environ.get('YSQ_ACCOUNT')
-    password=os.environ.get('YSQ_PASSWORD')
+    # account=os.environ.get('YSQ_ACCOUNT')
+    # password=os.environ.get('YSQ_PASSWORD')
+    account="丸子妮"
+    password="T7^iC4%e9gXvu"
     client.setenv(host,account,password)
     client.get_login_info()
     client.login()
     client.gethash()
     client.sign()
     info=  client.get_info()
+    print(info)
     return info
 # 运行示例
 if __name__ == "__main__":
