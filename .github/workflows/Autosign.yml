@@ -34,7 +34,7 @@ jobs:
           run: |
                tt=$(python ./python/sxmd.py)
                echo "sxmdinfo=$tt" >> "$GITHUB_ENV"
-             
+               echo "version=$(date +'%Y-%m-%d %H:%M:%S')" >>$GITHUB_ENV
         - name: 运行源社区签到脚本
           if: env.YSQ_ACCOUNT != '' && env.YSQ_PASSWORD != ''
           run: |
@@ -69,7 +69,7 @@ jobs:
               签到结果：
                 书香门第： ${{env.sxmdinfo}}
                 源社区：${{env.ysqinfo}}
-                脚本运行时间：${{ github.run_time }}
+                签到时间：${{ env.version }}
             to: ${{ env.AIM_EMAIL }}
             from: ${{ env.EMAIL_USERNAME }}
             html: false
