@@ -93,11 +93,16 @@ class HttpClient:
             'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
         response = requests.get(url, headers=headers)
-        self.signhash = re.search(r'id="JD.*href="(.*?)"', response.text).group(1)
+        try:
+            self.formhash = re.search(r'name="formhash" value="(.*?)"', response.text).group(1)
+        except:
+            self.formhash = ""
         # print( self.signhash)
         # print(response.text)
         
     def sign(self):
+        if self.formhash=="":
+            return False
         url=f'https://{self.host}/{self.signhash}&inajax=1&ajaxtarget='
         headers={
             'X-Requested-With' : 'XMLHttpRequest',
