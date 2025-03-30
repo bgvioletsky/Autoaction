@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-03-30 00:24:22
+LastEditTime: 2025-03-30 09:10:13
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -47,6 +47,7 @@ class HttpClient:
 
         try:
             response = requests.get(url, headers=headers)
+            print(response.text)
             self.loginhash = re.search(r'loginhash=(.*?)"', response.text).group(1)
             self.forhash = re.search(r'formhash.*value="(.*?)"', response.text).group(1)
             for cookie in response.cookies:
@@ -92,7 +93,7 @@ class HttpClient:
             'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
         response = requests.get(url, headers=headers)
-        # self.signhash = re.search(r'id="JD.*href="(.*?)"', response.text).group(1)
+        self.signhash = re.search(r'id="JD.*href="(.*?)"', response.text).group(1)
         # print( self.signhash)
         # print(response.text)
         
@@ -160,10 +161,11 @@ def main():
     client.get_login_info()
     client.login()
     client.gethash()
-    # client.sign()
+    client.sign()
     info=  client.get_info()
     return info
 # 运行示例
 if __name__ == "__main__":
-    main()
+   main()
+  
     
