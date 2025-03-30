@@ -32,12 +32,14 @@ jobs:
         - name: 运行书香门第签到脚本
           if: env.SXMD_ACCOUNT != '' && env.SXMD_PASSWORD != ''
           run: |
-               echo "sxmdinfo=$(python ./python/sxmd.py)" >> "$GITHUB_ENV"
+               tt=$(python ./python/sxmd.py)
+               echo "sxmdinfo=$tt" >> "$GITHUB_ENV"
              
         - name: 运行源社区签到脚本
           if: env.YSQ_ACCOUNT != '' && env.YSQ_PASSWORD != ''
           run: |
-              echo "ysqinfo=$(python ./python/ysq.py)" >> "$GITHUB_ENV"
+              yy=$(python ./python/ysq.py)
+              echo "ysqinfo=$yy" >> "$GITHUB_ENV"
         - name: 删除
           shell: bash
           run: |
