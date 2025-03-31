@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2024-10-28 15:54:20
-LastEditTime: 2025-03-30 12:43:47
+LastEditTime: 2025-03-31 10:00:14
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/sxmd.py
@@ -78,8 +78,6 @@ class HttpClient:
             self.subt = "签到成功!"
             return True
         else:
-            print(f"签到参数: {data}")
-            print(f"签到返回: {resdata}")
             self.subt = "签到失败!"
             return False
 
@@ -111,20 +109,13 @@ def main():
     host = "www.txtnovel.vip"
     account=os.environ.get('SXMD_ACCOUNT')
     password=os.environ.get('SXMD_PASSWORD')
-    if client.login(host, account, password):
-        # print("登录成功")
-        if client.getformhash(host):
-            # print("获取 formhash 成功")
-            if client.sign(host):
-                # print(client.subt)
-                if client.info(host):
-                    print(client.result)
-            else:
-                print(client.subt)
-        else:
-            print("获取 formhash 失败")
-    else:
-        print("登录失败")
+    account="bgcode"
+    password="snC$3LfrxVq7f"
+    client.login(host, account, password)
+    client.getformhash(host)
+    client.sign(host)
+    client.info(host)
+    print(client.result)
     return client.result
 # 运行示例
 if __name__ == "__main__":
