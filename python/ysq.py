@@ -195,10 +195,9 @@ class HttpClient:
 def main():
     client = HttpClient()
     host = "ysqbbs.com"
-    # account=os.environ.get('YSQ_ACCOUNT')
-    # password=os.environ.get('YSQ_PASSWORD')
-    account="bglhcode@qq.com"
-    password="Kd4*$As9gHH3N"
+    account=os.environ.get('YSQ_ACCOUNT')
+    password=os.environ.get('YSQ_PASSWORD')
+
     client.setenv(host,account,password)
     client.get_login_info()
     client.login()
