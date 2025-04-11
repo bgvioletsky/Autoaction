@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-04-12 00:03:05
+LastEditTime: 2025-04-12 07:35:16
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -24,25 +24,16 @@ def remove_duplicate_cookies(cookie_str):
     new_cookie_str = '; '.join([f"{key}={value}" for key, value in cookie_dict.items()])
     return new_cookie_str
 def remove_cookie_keys(cookie_str, keys_to_remove):
-    # 初始化一个空字典，用于存储解析后的 Cookie 键值对
     cookie_dict = {}
-    # 分割 Cookie 字符串为多个键值对
     cookie_pairs = cookie_str.split(';')
     for pair in cookie_pairs:
-        # 去除键值对前后的空白字符
         pair = pair.strip()
         if '=' in pair:
-            # 分割键值对为键和值
             key, value = pair.split('=', 1)
             cookie_dict[key] = value
-
-    # 遍历要移除的键列表
     for key in keys_to_remove:
-        # 如果键存在于字典中，则删除该键值对
         if key in cookie_dict:
             del cookie_dict[key]
-
-    # 将处理后的字典重新组合成 Cookie 字符串
     new_cookie_str = '; '.join([f"{key}={value}" for key, value in cookie_dict.items()])
     return new_cookie_str
 
@@ -179,17 +170,21 @@ class HttpClient:
             'Accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7'
         }
         response = requests.get(url, headers=headers)
-        pattern = r'源币.*?>(\d+).*?经验.*?>(\d+).*?贡献.*?>(\d+).*?积分.*?>(\d+)'
-        match = re.search(pattern, response.text, re.DOTALL)  # re.DOTALL 让 . 匹配换行符
-        if match:
+        match = re.search(r'源币.*?>(\d+)', response.text)  # re.DOTALL 让 . 匹配换行符
+        match1 = re.search(r'经验.*?>(\d+)', response.text)
+        match2 = re.search(r'贡献.*?>(\d+)', response.text)
+        match3 = re.search(r'积分.*?>(\d+)', response.text)
+        # pattern = r'源币.*?>(\d+).*?经验.*?>(\d+).*?贡献.*?>(\d+).*?积分.*?>(\d+)'
+        # match = re.search(pattern, response.text, re.DOTALL)  # re.DOTALL 让 . 匹配换行符
+        # if match:
             # 提取四个捕获组的值（确保顺序正确）
-            source_coin = match.group(1)
-            experience = match.group(2)
-            contribution = match.group(3)
-            points = match.group(4)
-            self.info = f"源币:{source_coin}  经验:{experience}  贡献:{contribution}  积分:{points}"
-        else:
-            print("未找到匹配的内容")
+        source_coin = match.group(1)
+        experience = match1.group(1)
+        contribution = match2.group(1)
+        points = match3.group(1)
+        self.info = f"源币:{source_coin}  经验:{experience}  贡献:{contribution}  积分:{points}"
+        # else:
+            # print("未找到匹配的内容")
         # print(self.info)
         return self.info
 def main():
@@ -197,7 +192,6 @@ def main():
     host = "ysqbbs.com"
     account=os.environ.get('YSQ_ACCOUNT')
     password=os.environ.get('YSQ_PASSWORD')
-
     client.setenv(host,account,password)
     client.get_login_info()
     client.login()
