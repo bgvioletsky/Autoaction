@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-03-30 12:51:13
+LastEditTime: 2025-04-11 23:59:33
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -11,6 +11,41 @@ import requests
 import re
 import os
 from urllib.parse import quote
+
+
+def remove_duplicate_cookies(cookie_str):
+    cookie_dict = {}
+    cookie_pairs = cookie_str.split(';')
+    for pair in cookie_pairs:
+        pair = pair.strip()
+        if '=' in pair:
+            key, value = pair.split('=', 1)
+            cookie_dict[key] = value
+    new_cookie_str = '; '.join([f"{key}={value}" for key, value in cookie_dict.items()])
+    return new_cookie_str
+def remove_cookie_keys(cookie_str, keys_to_remove):
+    # 初始化一个空字典，用于存储解析后的 Cookie 键值对
+    cookie_dict = {}
+    # 分割 Cookie 字符串为多个键值对
+    cookie_pairs = cookie_str.split(';')
+    for pair in cookie_pairs:
+        # 去除键值对前后的空白字符
+        pair = pair.strip()
+        if '=' in pair:
+            # 分割键值对为键和值
+            key, value = pair.split('=', 1)
+            cookie_dict[key] = value
+
+    # 遍历要移除的键列表
+    for key in keys_to_remove:
+        # 如果键存在于字典中，则删除该键值对
+        if key in cookie_dict:
+            del cookie_dict[key]
+
+    # 将处理后的字典重新组合成 Cookie 字符串
+    new_cookie_str = '; '.join([f"{key}={value}" for key, value in cookie_dict.items()])
+    return new_cookie_str
+
 class HttpClient:
     def __init__(self):
         self.host = ""
@@ -74,6 +109,8 @@ class HttpClient:
         for cookie in response.cookies:
                     self.cookie+=f"{cookie.name}={cookie.value};"
                     # cookies = response.headers.get("Set-Cookie", "")
+        self.cookie= remove_duplicate_cookies(self.cookie)
+        self.cookie= remove_cookie_keys(self.cookie, ['YPSa_2132_checkfollow', 'YPSa_2132_lip'])
         # print(self.cookie)
         
     def gethash(self):
@@ -94,14 +131,14 @@ class HttpClient:
         }
         response = requests.get(url, headers=headers)
         try:
-            self.formhash = re.search(r'name="formhash" value="(.*?)"', response.text).group(1)
+            self.signhash = re.search(r'formhash=(.*?)"', response.text).group(1)
         except:
-            self.formhash = ""
+            self.signhash = ""
         # print( self.signhash)
         # print(response.text)
         
     def sign(self):
-        if self.formhash=="":
+        if self.signhash=="":
             return False
         url=f'https://{self.host}/{self.signhash}&inajax=1&ajaxtarget='
         headers={
