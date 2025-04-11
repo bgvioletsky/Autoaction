@@ -1,7 +1,7 @@
 '''
 Author: bgcode
 Date: 2025-03-28 07:14:22
-LastEditTime: 2025-04-11 23:59:33
+LastEditTime: 2025-04-12 00:03:05
 LastEditors: bgcode
 Description: 描述
 FilePath: /Autoaction/python/ysq.py
@@ -140,7 +140,7 @@ class HttpClient:
     def sign(self):
         if self.signhash=="":
             return False
-        url=f'https://{self.host}/{self.signhash}&inajax=1&ajaxtarget='
+        url=f'https://{self.host}/plugin.php?id=k_misign:sign&operation=qiandao&formhash={self.signhash}&format=empty&inajax=1&ajaxtarget='
         headers={
             'X-Requested-With' : 'XMLHttpRequest',
             'Sec-Fetch-Dest' : 'empty',
@@ -158,7 +158,7 @@ class HttpClient:
             'Accept-Language' : 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
             'Accept' : '*/*',
             'Referer' : 'https://{self.host}/k_misign-sign.html'
-            };
+            }
         response = requests.get(url, headers=headers)
         # print(response.text) 
 
@@ -195,8 +195,10 @@ class HttpClient:
 def main():
     client = HttpClient()
     host = "ysqbbs.com"
-    account=os.environ.get('YSQ_ACCOUNT')
-    password=os.environ.get('YSQ_PASSWORD')
+    # account=os.environ.get('YSQ_ACCOUNT')
+    # password=os.environ.get('YSQ_PASSWORD')
+    account="bglhcode@qq.com"
+    password="Kd4*$As9gHH3N"
     client.setenv(host,account,password)
     client.get_login_info()
     client.login()
